@@ -104,7 +104,7 @@ button.primary:active:hover,
   /* The drum will rotate, starting at an angle of 0.
    * An animation will change this value.
    */
-  --angle: 99;
+  --angle: 0;
 
   /* How many symbols are there in the counter style? */
   --total: 20;
@@ -132,24 +132,102 @@ button.primary:active:hover,
   );
 
   --size: 6vh;
+  --half: calc(0.4 * var(--size)); /* include kludge value */
+  --girth: calc(var(--total) * var(--size) * 1.5);
+  --diameter: calc(var(--girth) / 3.1415962);
+  --radius: calc(var(--diameter) / 2);
+  --shift: calc(var(--radius) - var(--half));
+  --reel: linear-gradient(0deg, #0006 0%, #fff 50%, #0006 100%);
+  --shadow: linear-gradient(0deg, #0009 0%, #fff0 50%, #0009 100%);
 }
 
 
 ol {
+  position: relative;
   margin: 0;
-  list-style: fruit;
-  font-size: var(--size);
-  background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgb(128, 128, 128) 50%, rgb(0, 0, 0) 100%);
-  padding-inline-start: var(--size);
+  height: var(--diameter);
+  width: var(--size);
+  background: var(--reel);
 
   counter-set: index var(--first);
 
-  li {
-    list-style: none;
-    counter-increment: index;
+  /* Place a shadow gradient over the list items */
+  &::after {
+    content: "_";
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #0000;
+    background: var(--shadow);
   }
+
+  li {
+    position: absolute;
+    left: 0;
+    top: var(--shift);
+    counter-increment: index;
+
+    transform-origin: 0 50% var(--radius);
+  }
+
+  li:nth-child(1) {
+    transform:
+      rotateX(-72deg)
+  }
+
+  li:nth-child(2) {
+    transform:
+      rotateX(-54deg)
+  }
+
+  li:nth-child(3) {
+    transform:
+      rotateX(-36deg)
+  }
+
+  li:nth-child(4) {
+    transform:
+      rotateX(-18deg)
+  }
+
+  li:nth-child(5) {
+    transform:
+      rotateX(0deg)
+  }
+
+  li:nth-child(6) {
+    transform:
+      rotateX(18deg)
+  }
+
+  li:nth-child(7) {
+    transform:
+      rotateX(36deg)
+  }
+
+  li:nth-child(8) {
+    transform:
+      rotateX(54deg)
+  }
+
+  li:nth-child(9) {
+    transform:
+      rotateX(72deg)
+  }
+
+  li:nth-child(10) {
+    transform:
+      rotateX(90deg)
+  }
+
   li::before {
     content: counter(index, fruit);
+    font-size: var(--size);
+    position: absolute;
+    transform: translateX(40%);
   }
 }
 
