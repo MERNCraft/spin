@@ -282,23 +282,23 @@ ol {
   }
 
   li:nth-child(1) {
-    transform: rotateX(calc((var(--twist) - 90) * 1deg))
+    transform: rotateX(calc((var(--twist) - 100) * 1deg))
   }
 
   li:nth-child(2) {
-    transform: rotateX(calc((var(--twist) - 72) * 1deg))
+    transform: rotateX(calc((var(--twist) - 80) * 1deg))
   }
 
   li:nth-child(3) {
-    transform:rotateX(calc((var(--twist) - 54) * 1deg))
+    transform: rotateX(calc((var(--twist) - 60) * 1deg))
   }
 
   li:nth-child(4) {
-    transform:rotateX(calc((var(--twist) - 36) * 1deg))
+    transform:rotateX(calc((var(--twist) - 40) * 1deg))
   }
 
   li:nth-child(5) {
-    transform: rotateX(calc((var(--twist) - 18) * 1deg))
+    transform:rotateX(calc((var(--twist) - 20) * 1deg))
   }
 
   li:nth-child(6) {
@@ -306,23 +306,19 @@ ol {
   }
 
   li:nth-child(7) {
-    transform: rotateX(calc((var(--twist) + 18) * 1deg))
+    transform: rotateX(calc((var(--twist) + 20) * 1deg))
   }
 
   li:nth-child(8) {
-    transform: rotateX(calc((var(--twist) + 36) * 1deg))
+    transform: rotateX(calc((var(--twist) + 40) * 1deg))
   }
 
   li:nth-child(9) {
-    transform: rotateX(calc((var(--twist) + 54) * 1deg))
+    transform: rotateX(calc((var(--twist) + 60) * 1deg))
   }
 
   li:nth-child(10) {
-    transform: rotateX(calc((var(--twist) + 72) * 1deg))
-  }
-
-  li:nth-child(11) {
-    transform: rotateX(calc((var(--twist) + 90) * 1deg))
+    transform: rotateX(calc((var(--twist) + 80) * 1deg))
   }
 
   li::before {
