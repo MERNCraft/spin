@@ -1,7 +1,21 @@
-@counter-style fruit {
+@counter-style fruit-one {
   system: cyclic;
   symbols:
 "🍇" "🍈" "🍉" "🍊" "🍋" "🍋‍🟩" "🍌" "🍍" "🥭" "🍎" "🍏" "🍐" "🍑" "🍒" "🍓" "🫐" "🥝" "🍅" "🫒" "🥥";
+  suffix: "";
+}
+
+@counter-style fruit-two {
+  system: cyclic;
+  symbols:
+"🫐" "🍐" "🍈" "🥥" "🍑" "🍅" "🍍" "🫒" "🍋" "🍋‍🟩" "🥝" "🍎" "🍓" "🍉" "🍊" "🍌" "🥭" "🍇" "🍏" "🍒";
+  suffix: "";
+}
+
+@counter-style fruit-three {
+  system: cyclic;
+  symbols:
+"🫐" "🍏" "🍇" "🍋‍🟩" "🍑" "🥥" "🍒" "🥝" "🍌" "🍈" "🍓" "🍊" "🍎" "🍅" "🍋" "🫒" "🍐" "🍉" "🍍" "🥭";
   suffix: "";
 }
 
@@ -100,16 +114,38 @@ button.primary:active:hover,
 }
 }
 
-ol {
+:root {
+  /* How many symbols are there in the counter style? */
+  --total: 20;
+  /* How what angle does each li cover around a full circle? */
+  --arc: calc(360 / var(--total));
+
+  --size: 6vh;
+  --half: calc(0.22 * var(--size)); /* include kludge value */
+  --girth: calc(var(--total) * var(--size) * 1.5);
+  --diameter: calc(var(--girth) / 3.1415962);
+  --radius: calc(var(--diameter) / 2 - 3px); /* minus kludge */
+  --shift: calc(var(--radius) - var(--half));
+  --reel: linear-gradient(
+    0deg,
+    #0006 0%,
+    #fff 50%,
+    #0006 100%
+  );
+  --shadow: linear-gradient(
+    0deg,
+    #0009 0%,
+    #fff0 50%,
+    #0009 100
+  );
+}
+
+ol.one {
   /* The drum will rotate, starting at an angle of 0.
    * An animation will change this value.
    */
   --angle: 0;
 
-  /* How many symbols are there in the counter style? */
-  --total: 20;
-  /* How what angle does each li cover around a full circle? */
-  --arc: calc(360 / var(--total));
   /* Ignore completed whole rotations */
   --trim: mod(var(--angle), 360);
   /* If each symbol is in a position from 0 <= place < 20,
@@ -131,22 +167,93 @@ ol {
     calc(var(--total) - var(--turn)), var(--total)
   );
 
-  --size: 6vh;
-  --half: calc(0.22 * var(--size)); /* include kludge value */
-  --girth: calc(var(--total) * var(--size) * 1.5);
-  --diameter: calc(var(--girth) / 3.1415962);
-  --radius: calc(var(--diameter) / 2 - 3px); /* minus kludge */
-  --shift: calc(var(--radius) - var(--half));
-  --reel: linear-gradient(0deg, #0006 0%, #fff 50%, #0006 100%);
-  --shadow: linear-gradient(0deg, #0009 0%, #fff0 50%, #0009 100%);
+  animation-duration: 8s;
 
+  li::before {
+    content: counter(index, fruit-one);
+  }
+}
+
+ol.two {
+  /* The drum will rotate, starting at an angle of 0.
+   * An animation will change this value.
+   */
+  --angle: 0;
+
+  /* Ignore completed whole rotations */
+  --trim: mod(var(--angle), 360);
+  /* If each symbol is in a position from 0 <= place < 20,
+   * where is the first symbol now?
+   */
+  --place: calc(var(--trim) / var(--arc));
+  /* What fraction of a symbol size has it moved past the last
+   * resting symbol position?
+   */
+  --fraction: mod(var(--place), 1);
+  /* How many complete symbol positions has it moved? */
+  --turn:  calc(var(--place) - var(--fraction));
+  /* What angle of rotation does this fraction represent? */
+  --twist: calc(var(--fraction) * var(--arc));
+  /* What index number should the list start with, in order to
+   * push the first symbol into its --turn position?
+   */
+  --first: mod(
+    calc(var(--total) - var(--turn)), var(--total)
+  );
+
+  animation-duration: 6s;
+
+  li::before {
+    content: counter(index, fruit-three);
+  }
+}
+
+ol.three {
+  /* The drum will rotate, starting at an angle of 0.
+   * An animation will change this value.
+   */
+  --angle: 0;
+
+  /* Ignore completed whole rotations */
+  --trim: mod(var(--angle), 360);
+  /* If each symbol is in a position from 0 <= place < 20,
+   * where is the first symbol now?
+   */
+  --place: calc(var(--trim) / var(--arc));
+  /* What fraction of a symbol size has it moved past the last
+   * resting symbol position?
+   */
+  --fraction: mod(var(--place), 1);
+  /* How many complete symbol positions has it moved? */
+  --turn:  calc(var(--place) - var(--fraction));
+  /* What angle of rotation does this fraction represent? */
+  --twist: calc(var(--fraction) * var(--arc));
+  /* What index number should the list start with, in order to
+   * push the first symbol into its --turn position?
+   */
+  --first: mod(
+    calc(var(--total) - var(--turn)), var(--total)
+  );
+
+  animation-delay: 300ms;
+  animation-duration: 4s;
+
+  li::before {
+    content: counter(index, fruit-two);
+  }
+}
+
+ol {
   position: relative;
   margin: 0;
   height: var(--diameter);
   width: var(--size);
   background: var(--reel);
+  list-style: none;
+  margin-right: 1vw;
 
   counter-set: index var(--first);
+
   animation-name: spin;
   animation-duration: 10s;
   animation-fill-mode: forwards;
@@ -219,7 +326,6 @@ ol {
   }
 
   li::before {
-    content: counter(index, fruit);
     font-size: var(--size);
     position: absolute;
     transform: translateX(40%);
