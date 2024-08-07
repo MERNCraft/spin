@@ -100,7 +100,7 @@ button.primary:active:hover,
 }
 }
 
-:root {
+ol {
   /* The drum will rotate, starting at an angle of 0.
    * An animation will change this value.
    */
@@ -132,17 +132,14 @@ button.primary:active:hover,
   );
 
   --size: 6vh;
-  --half: calc(0.4 * var(--size)); /* include kludge value */
+  --half: calc(0.22 * var(--size)); /* include kludge value */
   --girth: calc(var(--total) * var(--size) * 1.5);
   --diameter: calc(var(--girth) / 3.1415962);
-  --radius: calc(var(--diameter) / 2);
+  --radius: calc(var(--diameter) / 2 - 3px); /* minus kludge */
   --shift: calc(var(--radius) - var(--half));
   --reel: linear-gradient(0deg, #0006 0%, #fff 50%, #0006 100%);
   --shadow: linear-gradient(0deg, #0009 0%, #fff0 50%, #0009 100%);
-}
 
-
-ol {
   position: relative;
   margin: 0;
   height: var(--diameter);
@@ -150,6 +147,10 @@ ol {
   background: var(--reel);
 
   counter-set: index var(--first);
+  animation-name: spin;
+  animation-duration: 10s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
 
   /* Place a shadow gradient over the list items */
   &::after {
@@ -174,53 +175,47 @@ ol {
   }
 
   li:nth-child(1) {
-    transform:
-      rotateX(-72deg)
+    transform: rotateX(calc((var(--twist) - 90) * 1deg))
   }
 
   li:nth-child(2) {
-    transform:
-      rotateX(-54deg)
+    transform: rotateX(calc((var(--twist) - 72) * 1deg))
   }
 
   li:nth-child(3) {
-    transform:
-      rotateX(-36deg)
+    transform:rotateX(calc((var(--twist) - 54) * 1deg))
   }
 
   li:nth-child(4) {
-    transform:
-      rotateX(-18deg)
+    transform:rotateX(calc((var(--twist) - 36) * 1deg))
   }
 
   li:nth-child(5) {
-    transform:
-      rotateX(0deg)
+    transform: rotateX(calc((var(--twist) - 18) * 1deg))
   }
 
   li:nth-child(6) {
-    transform:
-      rotateX(18deg)
+    transform: rotateX(calc(var(--twist) * 1deg))
   }
 
   li:nth-child(7) {
-    transform:
-      rotateX(36deg)
+    transform: rotateX(calc((var(--twist) + 18) * 1deg))
   }
 
   li:nth-child(8) {
-    transform:
-      rotateX(54deg)
+    transform: rotateX(calc((var(--twist) + 36) * 1deg))
   }
 
   li:nth-child(9) {
-    transform:
-      rotateX(72deg)
+    transform: rotateX(calc((var(--twist) + 54) * 1deg))
   }
 
   li:nth-child(10) {
-    transform:
-      rotateX(90deg)
+    transform: rotateX(calc((var(--twist) + 72) * 1deg))
+  }
+
+  li:nth-child(11) {
+    transform: rotateX(calc((var(--twist) + 90) * 1deg))
   }
 
   li::before {
@@ -292,4 +287,368 @@ pre.first {
   &::after {
     content: counter(first);
   }
+}
+
+@keyframes spin {
+    0%    { --angle:   0; } 
+    0.28% { --angle:   1; }
+    0.56% { --angle:   2; }
+    0.83% { --angle:   3; }
+    1.11% { --angle:   4; }
+    1.39% { --angle:   5; }
+    1.67% { --angle:   6; }
+    1.94% { --angle:   7; }
+    2.22% { --angle:   8; }
+    2.50% { --angle:   9; }
+    2.78% { --angle:  10; }
+    3.06% { --angle:  11; }
+    3.33% { --angle:  12; }
+    3.61% { --angle:  13; }
+    3.89% { --angle:  14; }
+    4.17% { --angle:  15; }
+    4.44% { --angle:  16; }
+    4.72% { --angle:  17; }
+    5.00% { --angle:  18; }
+    5.28% { --angle:  19; }
+    5.56% { --angle:  20; }
+    5.83% { --angle:  21; }
+    6.11% { --angle:  22; }
+    6.39% { --angle:  23; }
+    6.67% { --angle:  24; }
+    6.94% { --angle:  25; }
+    7.22% { --angle:  26; }
+    7.50% { --angle:  27; }
+    7.78% { --angle:  28; }
+    8.06% { --angle:  29; }
+    8.33% { --angle:  30; }
+    8.61% { --angle:  31; }
+    8.89% { --angle:  32; }
+    9.17% { --angle:  33; }
+    9.44% { --angle:  34; }
+    9.72% { --angle:  35; }
+   10.00% { --angle:  36; }
+   10.28% { --angle:  37; }
+   10.56% { --angle:  38; }
+   10.83% { --angle:  39; }
+   11.11% { --angle:  40; }
+   11.39% { --angle:  41; }
+   11.67% { --angle:  42; }
+   11.94% { --angle:  43; }
+   12.22% { --angle:  44; }
+   12.50% { --angle:  45; }
+   12.78% { --angle:  46; }
+   13.06% { --angle:  47; }
+   13.33% { --angle:  48; }
+   13.61% { --angle:  49; }
+   13.89% { --angle:  50; }
+   14.17% { --angle:  51; }
+   14.44% { --angle:  52; }
+   14.72% { --angle:  53; }
+   15.00% { --angle:  54; }
+   15.28% { --angle:  55; }
+   15.56% { --angle:  56; }
+   15.83% { --angle:  57; }
+   16.11% { --angle:  58; }
+   16.39% { --angle:  59; }
+   16.67% { --angle:  60; }
+   16.94% { --angle:  61; }
+   17.22% { --angle:  62; }
+   17.50% { --angle:  63; }
+   17.78% { --angle:  64; }
+   18.06% { --angle:  65; }
+   18.33% { --angle:  66; }
+   18.61% { --angle:  67; }
+   18.89% { --angle:  68; }
+   19.17% { --angle:  69; }
+   19.44% { --angle:  70; }
+   19.72% { --angle:  71; }
+   20.00% { --angle:  72; }
+   20.28% { --angle:  73; }
+   20.56% { --angle:  74; }
+   20.83% { --angle:  75; }
+   21.11% { --angle:  76; }
+   21.39% { --angle:  77; }
+   21.67% { --angle:  78; }
+   21.94% { --angle:  79; }
+   22.22% { --angle:  80; }
+   22.50% { --angle:  81; }
+   22.78% { --angle:  82; }
+   23.06% { --angle:  83; }
+   23.33% { --angle:  84; }
+   23.61% { --angle:  85; }
+   23.89% { --angle:  86; }
+   24.17% { --angle:  87; }
+   24.44% { --angle:  88; }
+   24.72% { --angle:  89; }
+   25.00% { --angle:  90; }
+   25.28% { --angle:  91; }
+   25.56% { --angle:  92; }
+   25.83% { --angle:  93; }
+   26.11% { --angle:  94; }
+   26.39% { --angle:  95; }
+   26.67% { --angle:  96; }
+   26.94% { --angle:  97; }
+   27.22% { --angle:  98; }
+   27.50% { --angle:  99; }
+   27.78% { --angle: 100; }
+   28.06% { --angle: 101; }
+   28.33% { --angle: 102; }
+   28.61% { --angle: 103; }
+   28.89% { --angle: 104; }
+   29.17% { --angle: 105; }
+   29.44% { --angle: 106; }
+   29.72% { --angle: 107; }
+   30.00% { --angle: 108; }
+   30.28% { --angle: 109; }
+   30.56% { --angle: 110; }
+   30.83% { --angle: 111; }
+   31.11% { --angle: 112; }
+   31.39% { --angle: 113; }
+   31.67% { --angle: 114; }
+   31.94% { --angle: 115; }
+   32.22% { --angle: 116; }
+   32.50% { --angle: 117; }
+   32.78% { --angle: 118; }
+   33.06% { --angle: 119; }
+   33.33% { --angle: 120; }
+   33.61% { --angle: 121; }
+   33.89% { --angle: 122; }
+   34.17% { --angle: 123; }
+   34.44% { --angle: 124; }
+   34.72% { --angle: 125; }
+   35.00% { --angle: 126; }
+   35.28% { --angle: 127; }
+   35.56% { --angle: 128; }
+   35.83% { --angle: 129; }
+   36.11% { --angle: 130; }
+   36.39% { --angle: 131; }
+   36.67% { --angle: 132; }
+   36.94% { --angle: 133; }
+   37.22% { --angle: 134; }
+   37.50% { --angle: 135; }
+   37.78% { --angle: 136; }
+   38.06% { --angle: 137; }
+   38.33% { --angle: 138; }
+   38.61% { --angle: 139; }
+   38.89% { --angle: 140; }
+   39.17% { --angle: 141; }
+   39.44% { --angle: 142; }
+   39.72% { --angle: 143; }
+   40.00% { --angle: 144; }
+   40.28% { --angle: 145; }
+   40.56% { --angle: 146; }
+   40.83% { --angle: 147; }
+   41.11% { --angle: 148; }
+   41.39% { --angle: 149; }
+   41.67% { --angle: 150; }
+   41.94% { --angle: 151; }
+   42.22% { --angle: 152; }
+   42.50% { --angle: 153; }
+   42.78% { --angle: 154; }
+   43.06% { --angle: 155; }
+   43.33% { --angle: 156; }
+   43.61% { --angle: 157; }
+   43.89% { --angle: 158; }
+   44.17% { --angle: 159; }
+   44.44% { --angle: 160; }
+   44.72% { --angle: 161; }
+   45.00% { --angle: 162; }
+   45.28% { --angle: 163; }
+   45.56% { --angle: 164; }
+   45.83% { --angle: 165; }
+   46.11% { --angle: 166; }
+   46.39% { --angle: 167; }
+   46.67% { --angle: 168; }
+   46.94% { --angle: 169; }
+   47.22% { --angle: 170; }
+   47.50% { --angle: 171; }
+   47.78% { --angle: 172; }
+   48.06% { --angle: 173; }
+   48.33% { --angle: 174; }
+   48.61% { --angle: 175; }
+   48.89% { --angle: 176; }
+   49.17% { --angle: 177; }
+   49.44% { --angle: 178; }
+   49.72% { --angle: 179; }
+   50.00% { --angle: 180; }
+   50.28% { --angle: 181; }
+   50.56% { --angle: 182; }
+   50.83% { --angle: 183; }
+   51.11% { --angle: 184; }
+   51.39% { --angle: 185; }
+   51.67% { --angle: 186; }
+   51.94% { --angle: 187; }
+   52.22% { --angle: 188; }
+   52.50% { --angle: 189; }
+   52.78% { --angle: 190; }
+   53.06% { --angle: 191; }
+   53.33% { --angle: 192; }
+   53.61% { --angle: 193; }
+   53.89% { --angle: 194; }
+   54.17% { --angle: 195; }
+   54.44% { --angle: 196; }
+   54.72% { --angle: 197; }
+   55.00% { --angle: 198; }
+   55.28% { --angle: 199; }
+   55.56% { --angle: 200; }
+   55.83% { --angle: 201; }
+   56.11% { --angle: 202; }
+   56.39% { --angle: 203; }
+   56.67% { --angle: 204; }
+   56.94% { --angle: 205; }
+   57.22% { --angle: 206; }
+   57.50% { --angle: 207; }
+   57.78% { --angle: 208; }
+   58.06% { --angle: 209; }
+   58.33% { --angle: 210; }
+   58.61% { --angle: 211; }
+   58.89% { --angle: 212; }
+   59.17% { --angle: 213; }
+   59.44% { --angle: 214; }
+   59.72% { --angle: 215; }
+   60.00% { --angle: 216; }
+   60.28% { --angle: 217; }
+   60.56% { --angle: 218; }
+   60.83% { --angle: 219; }
+   61.11% { --angle: 220; }
+   61.39% { --angle: 221; }
+   61.67% { --angle: 222; }
+   61.94% { --angle: 223; }
+   62.22% { --angle: 224; }
+   62.50% { --angle: 225; }
+   62.78% { --angle: 226; }
+   63.06% { --angle: 227; }
+   63.33% { --angle: 228; }
+   63.61% { --angle: 229; }
+   63.89% { --angle: 230; }
+   64.17% { --angle: 231; }
+   64.44% { --angle: 232; }
+   64.72% { --angle: 233; }
+   65.00% { --angle: 234; }
+   65.28% { --angle: 235; }
+   65.56% { --angle: 236; }
+   65.83% { --angle: 237; }
+   66.11% { --angle: 238; }
+   66.39% { --angle: 239; }
+   66.67% { --angle: 240; }
+   66.94% { --angle: 241; }
+   67.22% { --angle: 242; }
+   67.50% { --angle: 243; }
+   67.78% { --angle: 244; }
+   68.06% { --angle: 245; }
+   68.33% { --angle: 246; }
+   68.61% { --angle: 247; }
+   68.89% { --angle: 248; }
+   69.17% { --angle: 249; }
+   69.44% { --angle: 250; }
+   69.72% { --angle: 251; }
+   70.00% { --angle: 252; }
+   70.28% { --angle: 253; }
+   70.56% { --angle: 254; }
+   70.83% { --angle: 255; }
+   71.11% { --angle: 256; }
+   71.39% { --angle: 257; }
+   71.67% { --angle: 258; }
+   71.94% { --angle: 259; }
+   72.22% { --angle: 260; }
+   72.50% { --angle: 261; }
+   72.78% { --angle: 262; }
+   73.06% { --angle: 263; }
+   73.33% { --angle: 264; }
+   73.61% { --angle: 265; }
+   73.89% { --angle: 266; }
+   74.17% { --angle: 267; }
+   74.44% { --angle: 268; }
+   74.72% { --angle: 269; }
+   75.00% { --angle: 270; }
+   75.28% { --angle: 271; }
+   75.56% { --angle: 272; }
+   75.83% { --angle: 273; }
+   76.11% { --angle: 274; }
+   76.39% { --angle: 275; }
+   76.67% { --angle: 276; }
+   76.94% { --angle: 277; }
+   77.22% { --angle: 278; }
+   77.50% { --angle: 279; }
+   77.78% { --angle: 280; }
+   78.06% { --angle: 281; }
+   78.33% { --angle: 282; }
+   78.61% { --angle: 283; }
+   78.89% { --angle: 284; }
+   79.17% { --angle: 285; }
+   79.44% { --angle: 286; }
+   79.72% { --angle: 287; }
+   80.00% { --angle: 288; }
+   80.28% { --angle: 289; }
+   80.56% { --angle: 290; }
+   80.83% { --angle: 291; }
+   81.11% { --angle: 292; }
+   81.39% { --angle: 293; }
+   81.67% { --angle: 294; }
+   81.94% { --angle: 295; }
+   82.22% { --angle: 296; }
+   82.50% { --angle: 297; }
+   82.78% { --angle: 298; }
+   83.06% { --angle: 299; }
+   83.33% { --angle: 300; }
+   83.61% { --angle: 301; }
+   83.89% { --angle: 302; }
+   84.17% { --angle: 303; }
+   84.44% { --angle: 304; }
+   84.72% { --angle: 305; }
+   85.00% { --angle: 306; }
+   85.28% { --angle: 307; }
+   85.56% { --angle: 308; }
+   85.83% { --angle: 309; }
+   86.11% { --angle: 310; }
+   86.39% { --angle: 311; }
+   86.67% { --angle: 312; }
+   86.94% { --angle: 313; }
+   87.22% { --angle: 314; }
+   87.50% { --angle: 315; }
+   87.78% { --angle: 316; }
+   88.06% { --angle: 317; }
+   88.33% { --angle: 318; }
+   88.61% { --angle: 319; }
+   88.89% { --angle: 320; }
+   89.17% { --angle: 321; }
+   89.44% { --angle: 322; }
+   89.72% { --angle: 323; }
+   90.00% { --angle: 324; }
+   90.28% { --angle: 325; }
+   90.56% { --angle: 326; }
+   90.83% { --angle: 327; }
+   91.11% { --angle: 328; }
+   91.39% { --angle: 329; }
+   91.67% { --angle: 330; }
+   91.94% { --angle: 331; }
+   92.22% { --angle: 332; }
+   92.50% { --angle: 333; }
+   92.78% { --angle: 334; }
+   93.06% { --angle: 335; }
+   93.33% { --angle: 336; }
+   93.61% { --angle: 337; }
+   93.89% { --angle: 338; }
+   94.17% { --angle: 339; }
+   94.44% { --angle: 340; }
+   94.72% { --angle: 341; }
+   95.00% { --angle: 342; }
+   95.28% { --angle: 343; }
+   95.56% { --angle: 344; }
+   95.83% { --angle: 345; }
+   96.11% { --angle: 346; }
+   96.39% { --angle: 347; }
+   96.67% { --angle: 348; }
+   96.94% { --angle: 349; }
+   97.22% { --angle: 350; }
+   97.50% { --angle: 351; }
+   97.78% { --angle: 352; }
+   98.06% { --angle: 353; }
+   98.33% { --angle: 354; }
+   98.61% { --angle: 355; }
+   98.89% { --angle: 356; }
+   99.17% { --angle: 357; }
+   99.44% { --angle: 358; }
+   99.72% { --angle: 359; }
+   100%   { --angle: 360; }
 }

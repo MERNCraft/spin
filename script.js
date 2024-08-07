@@ -25,3 +25,17 @@ const entries = properties.reduce(( entries, property) => {
 }, {})
 
 console.log("entries", JSON.stringify(entries, null, '  '));
+
+
+// const fraction = 100 / 360 // 0.27....
+
+// const steps = []
+// for ( let ii = 0; ii < 361; ii += 1 ) {
+//   const step = (fraction * ii).toFixed(2)
+//   steps.push(`  ${step}% { --angle: ${ii}; }
+//   `)
+// }
+
+// const string = steps.join("")
+// console.log("string:", string);
+
