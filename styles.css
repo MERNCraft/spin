@@ -1,0 +1,217 @@
+@counter-style fruit {
+  system: cyclic;
+  symbols:
+"🍇" "🍈" "🍉" "🍊" "🍋" "🍋‍🟩" "🍌" "🍍" "🥭" "🍎" "🍏" "🍐" "🍑" "🍒" "🍓" "🫐" "🥝" "🍅" "🫒" "🥥";
+  suffix: "";
+}
+
+:root {
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  --light: #ddd;
+  --mid: #888;
+  --dark: #222;
+  --gap: 0.5em;
+
+  --primary: #060;
+  --primary-border: #393;
+  --primary-active: #030;
+
+  color: var(--light);
+  background-color: var(--dark);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* BUTTONS / BUTTONS / BUTTONS / BUTTONS / BUTTONS / BUTTONS */
+
+body {
+div.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+div.buttons button {
+  flex: 1
+}
+
+div.buttons .primary {
+  margin-left: 0.5em;
+  flex: 2
+}
+
+
+button,
+.button {
+  border: 1px outset var(--mid);
+  border-radius: var(--gap);
+  padding: var(--gap);
+}
+
+button:not(:disabled),
+.button:not(:disabled) {
+  cursor: pointer;
+}
+
+button:hover,
+.button:hover {
+  color: #fff;
+}
+
+button:hover:active,
+.button:hover:active {
+  border-style: inset;
+  background-color: #000;
+}
+
+button.pressed,
+.button.pressed {
+  color: #fff;
+  border-style: inset;
+  background-color: #000;
+}
+
+button.primary,
+.button.primary {
+  background-color: var(--primary);
+  border-color: var(--primary-border);
+}
+
+button.primary:active:hover,
+.button.primary:active:hover {
+  background-color: var(--primary-active);
+}
+}
+
+:root {
+  /* The drum will rotate, starting at an angle of 0.
+   * An animation will change this value.
+   */
+  --angle: 99;
+
+  /* How many symbols are there in the counter style? */
+  --total: 20;
+  /* How what angle does each li cover around a full circle? */
+  --arc: calc(360 / var(--total));
+  /* Ignore completed whole rotations */
+  --trim: mod(var(--angle), 360);
+  /* If each symbol is in a position from 0 <= place < 20,
+   * where is the first symbol now?
+   */
+  --place: calc(var(--trim) / var(--arc));
+  /* What fraction of a symbol size has it moved past the last
+   * resting symbol position?
+   */
+  --fraction: mod(var(--place), 1);
+  /* How many complete symbol positions has it moved? */
+  --turn:  calc(var(--place) - var(--fraction));
+  /* What angle of rotation does this fraction represent? */
+  --twist: calc(var(--fraction) * var(--arc));
+  /* What index number should the list start with, in order to
+   * push the first symbol into its --turn position?
+   */
+  --first: mod(
+    calc(var(--total) - var(--turn)), var(--total)
+  );
+
+  --size: 6vh;
+}
+
+
+ol {
+  margin: 0;
+  list-style: fruit;
+  font-size: var(--size);
+  background: linear-gradient(0deg, rgb(0, 0, 0) 0%, rgb(128, 128, 128) 50%, rgb(0, 0, 0) 100%);
+  padding-inline-start: var(--size);
+
+  counter-set: index var(--first);
+
+  li {
+    list-style: none;
+    counter-increment: index;
+  }
+  li::before {
+    content: counter(index, fruit);
+  }
+}
+
+pre.angle {
+  counter-set: angle var(--angle);
+  &::after {
+    content: "≅" counter(angle);
+  }
+}
+
+pre.total {
+  counter-set: total var(--total);
+  &::after {
+    content: counter(total);
+  }
+}
+
+pre.arc {
+  counter-set: arc var(--arc);
+  &::after {
+    content: counter(arc);
+  }
+}
+
+pre.trim {
+  counter-set: trim calc(var(--trim) * 100);
+  &::after {
+    content: counter(trim) "/100";
+  }
+}
+
+pre.place {
+  counter-set: place calc(var(--place) * 100);
+  &::after {
+    content: counter(place) "/100";
+  }
+}
+
+pre.fraction {
+  counter-set: fraction calc(var(--fraction) * 100);
+  &::after {
+    content: counter(fraction) "/100";
+  }
+}
+
+pre.turn {
+  counter-set: turn var(--turn);
+  &::after {
+    content: counter(turn);
+  }
+}
+
+pre.twist {
+  counter-set: twist calc(var(--twist) * 100);
+  &::after {
+    content: counter(twist) "/100";
+  }
+}
+
+pre.first {
+  counter-set: first var(--first);
+  &::after {
+    content: counter(first);
+  }
+}
