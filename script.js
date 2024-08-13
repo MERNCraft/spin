@@ -39,3 +39,17 @@
 // const string = steps.join("")
 // console.log("string:", string);
 
+const total  = 60
+const frames = 10
+const fraction = total / frames
+
+const steps = []
+for ( let ii = 0; ii <= frames; ii += 1 ) {
+  const step = (fraction * ii) // .toFixed(2)
+  steps.push(`  ${ii * 10}% { --angle: ${step}; }
+  `)
+}
+
+const string = steps.join("")
+console.log("string:\n ", string);
+
