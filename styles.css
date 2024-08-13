@@ -1,14 +1,14 @@
 @counter-style fruit-one {
   system: cyclic;
   symbols:
-"🍇" "🍈" "🍉" "🍊" "🍋" "🍌" "🍍" "🥭" "🍎" "🍏" "🍐" "🍑" "🍒" "🍓" "🫐" "🥝" "🍅" "🥥";
+"🍇" "🍈" "🍉" "🍊" "🍋" "🍒" "🍍" "🥭" "🍎" "🍏" "🍐" "🍑" "🍌" "🍓" "🫐" "🥝" "🍅" "🥥";
   suffix: "";
 }
 
 @counter-style fruit-two {
   system: cyclic;
   symbols:
-"🫐" "🍐" "🍈" "🥥" "🍑" "🍅" "🍍" "🍋" "🥝" "🍎" "🍓" "🍉" "🍊" "🍌" "🥭" "🍇" "🍏" "🍒";
+"🫐" "🍐" "🍈" "🥥" "🍒" "🍑" "🍍" "🍋" "🥝" "🍎" "🍓" "🍉" "🍊" "🍌" "🥭" "🍇" "🍏" "🍅";
   suffix: "";
 }
 
@@ -17,6 +17,12 @@
   symbols:
 "🫐" "🍏" "🍇" "🍑" "🥥" "🍒" "🥝" "🍌" "🍈" "🍓" "🍊" "🍎" "🍅" "🍋" "🍐" "🍉" "🍍" "🥭";
   suffix: "";
+}
+
+@counter-style mood {
+  system: cyclic;
+  symbols: "😔" "😞" "🙁" "😕" "🙂" "😀" "😄" "😁" "😊";
+  suffix: ""
 }
 
 :root {
@@ -34,14 +40,39 @@
   --light: #ddd;
   --mid: #888;
   --dark: #222;
-  --gap: 0.5em;
-
   --primary: #060;
   --primary-border: #393;
   --primary-active: #030;
 
-  color: var(--light);
-  background-color: var(--dark);
+  --gap: 0.5em;
+
+  /* How many symbols are there in the counter style? */
+  --total: 18;
+  /* How what angle does each li cover around a full circle? */
+  --arc: calc(360 / var(--total));
+
+  --size: 25px;
+  --half: calc(0.22 * var(--size)); /* include kludge value */
+  --girth: calc(var(--total) * var(--size) * 1.5);
+  --diameter: calc(var(--girth) / 3.1415962);
+  --radius: calc(var(--diameter) / 2 - 3px); /* minus kludge */
+  --reel:  110px;
+  --shift: calc(var(--radius) - var(--half));
+  --raise: calc(var(--reel) / 2 - var(--radius) - 12px);
+  --drum: linear-gradient(
+    0deg,
+    #000   0%,
+    #fff  50%,
+    #000 100%
+  );
+  --shadow: linear-gradient(
+    0deg,
+    #0009   0%,
+    #fff0  50%,
+    #0009 100%
+  );
+
+  counter-set: mood 5;
 }
 
 body {
@@ -51,32 +82,77 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 16px;
+
+  color: var(--light);
+  background-color: var(--dark);
+}
+
+main {
+  position: relative;
+  width: 300px;
+  height: 150px;
+  background-color: #030;
+  /* overflow: hidden; */
+}
+
+main,
+.reels {
+  border: 1px solid #fff;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+div.reels {
+  display: flex;
+  position: absolute;
+  top: 5px;
+  left: 73px;
+
+  width: 150px;
+  height: var(--reel);
+  overflow: hidden;
+}
+
+div.bar {
+  position: absolute;
+  --inset: 30px;
+  --bar: 3px;
+  left: 0;
+  right: 0;
+  top: var(--inset);
+  bottom: var(--inset);
+  background-color: #0000;
+  border: 0 solid #f90;
+  border-top-width: var(--bar);
+  border-bottom-width: var(--bar);
+  filter: drop-shadow( 0px 2px 2px #0009)
 }
 
 
 /* BUTTONS / BUTTONS / BUTTONS / BUTTONS / BUTTONS / BUTTONS */
+input {
+  position: absolute;
+  left: -99vw;
+}
 
-body {
 div.buttons {
+  position: absolute;
+  bottom: 4px;
+  left: 73px;
   display: flex;
   justify-content: space-between;
+  width: 150px;
 }
 
 div.buttons button {
   flex: 1
 }
 
-div.buttons .primary {
-  margin-left: 0.5em;
-  flex: 2
-}
-
-
-button,
 .button {
   border: 1px outset var(--mid);
   border-radius: var(--gap);
-  padding: var(--gap);
+  padding: 0 var(--gap);
 }
 
 button:not(:disabled),
@@ -112,39 +188,18 @@ button.primary:active:hover,
 .button.primary:active:hover {
   background-color: var(--primary-active);
 }
-}
 
-:root {
-  /* How many symbols are there in the counter style? */
-  --total: 18;
-  /* How what angle does each li cover around a full circle? */
-  --arc: calc(360 / var(--total));
 
-  --size: 6vh;
-  --half: calc(0.22 * var(--size)); /* include kludge value */
-  --girth: calc(var(--total) * var(--size) * 1.5);
-  --diameter: calc(var(--girth) / 3.1415962);
-  --radius: calc(var(--diameter) / 2 - 3px); /* minus kludge */
-  --shift: calc(var(--radius) - var(--half));
-  --reel: linear-gradient(
-    0deg,
-    #0006 0%,
-    #fff 50%,
-    #0006 100%
-  );
-  --shadow: linear-gradient(
-    0deg,
-    #0009 0%,
-    #fff0 50%,
-    #0009 100
-  );
+ol {
+  position: absolute;
+  top: var(--raise);
 }
 
 ol.one {
   /* The drum will rotate, starting at an angle of 0.
    * An animation will change this value.
    */
-  --angle: 0;
+  --angle: 150;
 
   /* Ignore completed whole rotations */
   --trim: mod(var(--angle), 360);
@@ -167,7 +222,7 @@ ol.one {
     calc(var(--total) - var(--turn)), var(--total)
   );
 
-  animation-duration: 8s;
+  /* animation-duration: 8s; */
 
   li::before {
     content: counter(index, fruit-one);
@@ -201,7 +256,7 @@ ol.two {
     calc(var(--total) - var(--turn)), var(--total)
   );
 
-  animation-duration: 6s;
+  animation-duration: 1.6s;
 
   li::before {
     content: counter(index, fruit-three);
@@ -236,7 +291,7 @@ ol.three {
   );
 
   animation-delay: 300ms;
-  animation-duration: 4s;
+  /* animation-duration: 4s; */
 
   li::before {
     content: counter(index, fruit-two);
@@ -248,16 +303,16 @@ ol {
   margin: 0;
   height: var(--diameter);
   width: var(--size);
-  background: var(--reel);
+  background: var(--drum);
   list-style: none;
   margin-right: 1vw;
 
   counter-set: index var(--first);
 
   animation-name: spin;
-  animation-duration: 10s;
+  /* animation-duration: 10s; */
   animation-fill-mode: forwards;
-  animation-iteration-count: infinite;
+  animation-iteration-count: 1; /* infinite; */
 
   /* Place a shadow gradient over the list items */
   &::after {
@@ -327,8 +382,45 @@ ol {
     transform: translateX(40%);
   }
 }
+ol:last-of-type {
+  margin: 0;
+}
 
-pre.angle {
+p.mood {
+  position: absolute;
+  margin: 0;
+  left: 0;
+  top: 8px;
+  font-size: 73px;
+}
+p.mood::after {
+  content: counter(mood, mood);
+
+}
+
+a.refresh {
+  position: absolute;
+  right: 0;
+  top: 48px;
+  width: 73px;
+  height: 24px;
+  text-align: center;
+  color: #ddd;
+  text-decoration: none;
+  background-color: #060;
+  border: 1px outset #090;
+  border-radius: 8px;
+
+  &:hover {
+    color: #fff;
+  }
+  
+  &:hover:active {
+    border-style: inset;
+    background-color: #030;
+  }
+}
+/* pre.angle {
   counter-set: angle var(--angle);
   &::after {
     content: "≅" counter(angle);
@@ -389,8 +481,9 @@ pre.first {
   &::after {
     content: counter(first);
   }
-}
+} */
 
+/* Provide a step for each of 360° */
 @keyframes spin {
     0%    { --angle:   0; } 
     0.28% { --angle:   1; }
@@ -756,7 +849,7 @@ pre.first {
 }
 
 /* Show the GitHub logo */
-a {
+a.github {
   width: 0;
   height: 0;
 
