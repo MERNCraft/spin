@@ -7,26 +7,44 @@
     content="width=device-width, initial-scale=1.0">
   <title>Casino</title>
   <link rel="stylesheet" href="styles.css">
-  <script defer src="script.js"></script>
 </head>
 <body>
   <main>
+    <!-- Buttons to trigger the final spin -->
+    <div class="final buttons">
+      <label class="button">
+        <input type="radio" id="final-one">
+        <span>Spin</span>
+      </label>
+      <label class="button">
+        <input type="radio" id="final-two">
+        <span>Spin</span>
+      </label>
+      <label class="button">
+        <input type="radio" id="final-three">
+        <span>Spin</span>
+      </label>
+    </div>
+    <!-- Buttons that are active for the first two spins -->
     <div class="buttons">
       <label class="button">
-        <input type="radio" id="one">
+        <input type="checkbox" id="one">
         <span>Spin</span>
       </label>
       <label class="button">
-        <input type="radio" id="two">
+        <input type="checkbox" id="two">
         <span>Spin</span>
       </label>
       <label class="button">
-        <input type="radio" id="three">
+        <input type="checkbox" id="three">
         <span>Spin</span>
       </label>
     </div>
 
+    <!-- Fruit machine reels in a frame -->
     <div class="reels">
+      <div class="win-line"></div>
+
       <ol class="one">
         <li></li>
         <li></li>
@@ -60,20 +78,18 @@
         <li></li>
         <li></li>
       </ol>
-
-      <div class="bar"></div>
     </div>
 
     <p class="mood"></p>
 
-    <a
-      class="github"
+    <!-- Link to reload the page -->
+    <a href="/" class="refresh">Replay</a>
+
+    <a class="github"
       href="https://github.com/MERNCraft/03_casino"
     >
       <img src="github.svg" alt="github">
     </a>
-
-    <a href="/" class="refresh">Replay</a>
   </main>
 
     <!-- <div>

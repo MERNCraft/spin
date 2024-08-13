@@ -1,18 +1,19 @@
-@counter-style fruit-one {
+/* Custom counters for the reels and the mood emoji */
+@counter-style reel-one {
   system: cyclic;
   symbols:
 "🍇" "🍈" "🍉" "🍒" "🍊" "🍋" "🍍" "🥭" "🍎" "🍏" "🍐" "🍑" "🍌" "🍓" "🫐" "🥝" "🍅" "🥥";
   suffix: "";
 }
 
-@counter-style fruit-two {
+@counter-style reel-two {
   system: cyclic;
   symbols:
 "🫐" "🍐" "🍈" "🍒" "🥥" "🍑" "🍍" "🍋" "🥝" "🍎" "🍓" "🍉" "🍊" "🍌" "🥭" "🍇" "🍏" "🍅";
   suffix: "";
 }
 
-@counter-style fruit-three {
+@counter-style reel-three {
   system: cyclic;
   symbols:
 "🫐" "🍏" "🍇" "🍒" "🍑" "🥥" "🥝" "🍌" "🍈" "🍓" "🍊" "🍎" "🍅" "🍋" "🍐" "🍉" "🍍" "🥭";
@@ -25,40 +26,50 @@
   suffix: ""
 }
 
+/* Colors and dimensions */
 :root {
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --white:  #fff;
+  --light:  #ddd;
+  --brdr:   #060;
+  --dark:   #222;
+  --black:  #000;
+  --bg:     #030;
+  --bar-bg: #f60;
 
-  color-scheme: light dark;
+  --main: 300px;
+  --view: 150px;
+  --side:   3px;
+  --pad:    8px;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  
-  --light: #ddd;
-  --mid: #888;
-  --dark: #222;
-  --primary: #060;
-  --primary-border: #393;
-  --primary-active: #030;
+  /* Account for 1px border when spacing elements */
+  --b-size: 1px;
+  --space: 73px; /* (--main - --view) / 2 - 2 * --b-size */
 
-  --gap: 0.5em;
+  /* ROTATING THE REELS */
 
   /* How many symbols are there in the counter style? */
-  --total: 18;
+  --total:    18;
   /* How what angle does each li cover around a full circle? */
-  --arc: calc(360 / var(--total));
+  --arc:      calc(360 / var(--total));
 
-  --size: 25px;
-  --half: calc(0.22 * var(--size)); /* include kludge value */
-  --girth: calc(var(--total) * var(--size) * 1.5);
+  /* Dimension and placement of fruit emojis */
+  --f-size:   27px;
+  --half:     calc(0.5 * var(--f-size));
+  --origin:   0 var(--half) var(--radius);
+  
+  /* Circumference, diameter and radius of each reel */
+  --spacing:  1.5;
+  --girth:    calc(var(--total) * var(--f-size) * var(--spacing));
   --diameter: calc(var(--girth) / 3.1415962);
-  --radius: calc(var(--diameter) / 2 - 3px); /* minus kludge */
-  --reel:  110px;
-  --shift: calc(var(--radius) - var(--half));
-  --raise: calc(var(--reel) / 2 - var(--radius) - 12px);
+  --radius:   calc(var(--diameter) / 2);
+
+  /* Placement in window ( KLUDGE = 4px ) */
+  --frame:    110px;
+  --li-top:   calc(var(--radius) - var(--half) - 4px);
+  --ol-top: calc(var(--frame) / 2 - var(--radius));
+  --bar-in: 36px; /* used to centre orange win bar */
+
+  /* Shading of curved reels */
   --drum: linear-gradient(
     0deg,
     #000   0%,
@@ -72,69 +83,63 @@
     #0009 100%
   );
 
-  --one: spin; 
-  --two: spin; 
-  --three: spin;
-
+  /* Initial mood emoji: slightly happy */
   counter-set: mood 5;
 }
 
 body {
+  /* Fill the viewport */
   margin: 0;
   padding: 0;
   min-height: 100vh;
+
+  /* Place the main element centrally */
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 16px;
 
+  font-size: 16px;
+  font-family: Arial, sans-serif;
   color: var(--light);
   background-color: var(--dark);
 }
 
 main {
   position: relative;
-  width: 300px;
-  height: 150px;
-  background-color: #030;
-  /* overflow: hidden; */
+  width: var(--main);
+  height: var(--view);
+  background-color: var(--bg);
 }
 
 main,
 .reels {
-  border: 1px solid #fff;
-  border-radius: 8px;
+  border: var(--b-size) solid var(--white);
+  border-radius: var(--pad);
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 div.reels {
   display: flex;
   position: absolute;
-  top: 5px;
-  left: 73px;
+  top: var(--pad);
+  left: var(--space);
 
-  width: 150px;
-  height: var(--reel);
-  overflow: hidden;
+  width: var(--view);
+  height: var(--frame);
 }
 
-div.bar {
+div.win-line {
   position: absolute;
-  --inset: 30px;
-  --bar: 3px;
   left: 0;
   right: 0;
-  top: var(--inset);
-  bottom: var(--inset);
-  background-color: #0000;
-  border: 0 solid #f90;
-  border-top-width: var(--bar);
-  border-bottom-width: var(--bar);
-  filter: drop-shadow( 0px 2px 2px #0009)
+  top: var(--bar-in);
+  bottom: var(--bar-in);
+  background-color: var(--bar-bg);
 }
 
+/* Spin buttons */
 
-/* BUTTONS / BUTTONS / BUTTONS / BUTTONS / BUTTONS / BUTTONS */
 input {
   position: absolute;
   left: -99vw;
@@ -142,11 +147,11 @@ input {
 
 div.buttons {
   position: absolute;
-  bottom: 4px;
-  left: 73px;
+  bottom: var(--b-size);
+  left: var(--space);
   display: flex;
   justify-content: space-between;
-  width: 150px;
+  width: var(--view);
 }
 
 div.buttons button {
@@ -154,53 +159,32 @@ div.buttons button {
 }
 
 .button {
-  border: 1px outset var(--mid);
-  border-radius: var(--gap);
-  padding: 0 var(--gap);
-}
-
-button:not(:disabled),
-.button:not(:disabled) {
+  border: 1px outset var(--brdr);
+  border-radius: var(--pad);
+  padding: var(--side) var(--pad);
   cursor: pointer;
 }
 
-button:hover,
 .button:hover {
-  color: #fff;
+  color: var(--white);
 }
 
-button:hover:active,
 .button:hover:active {
   border-style: inset;
-  background-color: #000;
+  background-color: var(--black);
 }
 
-button.pressed,
-.button.pressed {
-  color: #fff;
-  border-style: inset;
-  background-color: #000;
-}
 
-button.primary,
-.button.primary {
-  background-color: var(--primary);
-  border-color: var(--primary-border);
-}
-
-button.primary:active:hover,
-.button.primary:active:hover {
-  background-color: var(--primary-active);
-}
-
+/* Reels */
 
 ol {
   position: absolute;
-  top: var(--raise);
-}
+  top: var(--ol-top);
+/* } */
 
-ol.one {
-  /* The drum will rotate, starting at an angle of 0.
+/* 
+ol.one { */
+  /* The reel will rotate, starting at an angle of 0.
    * An animation will change this value.
    */
   --angle: 0;
@@ -225,119 +209,58 @@ ol.one {
   --first: mod(
     calc(var(--total) - var(--turn)), var(--total)
   );
+}
 
-  /* animation-duration: 8s; */
+ol.one li::before {
+  content: counter(index, reel-one);
+}
+ol.two li::before {
+  content: counter(index, reel-two);
+}
+ol.three li::before {
+  content: counter(index, reel-three);
+}
 
-  li::before {
-    content: counter(index, fruit-one);
-  }
+.buttons:not(.final) label {
+  background-color: #090;
 }
-html:has(#two:checked):has(#three:checked) {
-  --one: final
+.buttons:has(#two:checked):has(#three:checked),
+.buttons:has(#one:checked):has(#three:checked),
+.buttons:has(#one:checked):has(#two:checked) {
+  pointer-events: none;
 }
-html:has(#one:checked):has(#three:checked) {
-  --two: final
+
+.buttons:has(#one:checked)   ~ .reels .one,
+.buttons:has(#two:checked)   ~ .reels .two,
+.buttons:has(#three:checked) ~ .reels .three {
+  animation-name: spin;
 }
-html:has(#one:checked):has(#two:checked) {
-  --three: final
-}
-.buttons:has(#one:checked) ~ .reels .one {
-  animation-name: var(--one);
+
+.buttons:has(#final-one:checked)   ~ .reels .one,
+.buttons:has(#final-two:checked)   ~ .reels .two,
+.buttons:has(#final-three:checked) ~ .reels .three {
+  animation-name: final;
+  animation-duration: 4s;
+
 }
 
 input:checked + span {
-  background-color: red;
-}
-
-
-ol.two {
-  /* The drum will rotate, starting at an angle of 0.
-   * An animation will change this value.
-   */
-  --angle: 0;
-
-  /* Ignore completed whole rotations */
-  --trim: mod(var(--angle), 360);
-  /* If each symbol is in a position from 0 <= place < 20,
-   * where is the first symbol now?
-   */
-  --place: calc(var(--trim) / var(--arc));
-  /* What fraction of a symbol size has it moved past the last
-   * resting symbol position?
-   */
-  --fraction: mod(var(--place), 1);
-  /* How many complete symbol positions has it moved? */
-  --turn:  calc(var(--place) - var(--fraction));
-  /* What angle of rotation does this fraction represent? */
-  --twist: calc(var(--fraction) * var(--arc));
-  /* What index number should the list start with, in order to
-   * push the first symbol into its --turn position?
-   */
-  --first: mod(
-    calc(var(--total) - var(--turn)), var(--total)
-  );
-
-  /* animation-duration: 1.6s; */
-
-  li::before {
-    content: counter(index, fruit-two);
-  }
-}
-.buttons:has(#two:checked) ~ .reels .two {
-  animation-name: var(--two);
-}
-
-ol.three {
-  /* The drum will rotate, starting at an angle of 0.
-   * An animation will change this value.
-   */
-  --angle: 0;
-
-  /* Ignore completed whole rotations */
-  --trim: mod(var(--angle), 360);
-  /* If each symbol is in a position from 0 <= place < 20,
-   * where is the first symbol now?
-   */
-  --place: calc(var(--trim) / var(--arc));
-  /* What fraction of a symbol size has it moved past the last
-   * resting symbol position?
-   */
-  --fraction: mod(var(--place), 1);
-  /* How many complete symbol positions has it moved? */
-  --turn:  calc(var(--place) - var(--fraction));
-  /* What angle of rotation does this fraction represent? */
-  --twist: calc(var(--fraction) * var(--arc));
-  /* What index number should the list start with, in order to
-   * push the first symbol into its --turn position?
-   */
-  --first: mod(
-    calc(var(--total) - var(--turn)), var(--total)
-  );
-
-  /* animation-delay: 300ms; */
-  /* animation-duration: 4s; */
-
-  li::before {
-    content: counter(index, fruit-three);
-  }
-}
-.buttons:has(#three:checked) ~ .reels .three {
-  animation-name: var(--three);
+  /* background-color: red; */
 }
 
 ol {
   position: relative;
   margin: 0;
   height: var(--diameter);
-  width: var(--size);
+  width: var(--f-size);
   background: var(--drum);
   list-style: none;
-  margin-right: 1vw;
+  margin-right: 2px;
 
   counter-set: index var(--first);
 
   /* animation-name: spin; */
-  animation-duration: 1s;
+  animation-duration: 2s;
   animation-fill-mode: forwards;
   animation-iteration-count: 1; /* infinite; */
 
@@ -357,10 +280,11 @@ ol {
   li {
     position: absolute;
     left: 0;
-    top: var(--shift);
+    top: var(--li-top);
     counter-increment: index;
+    font-size: var(--f-size);
 
-    transform-origin: 0 50% var(--radius);
+    transform-origin: var(--origin);
   }
 
   li:nth-child(1) {
@@ -403,14 +327,13 @@ ol {
     transform: rotateX(calc((var(--twist) + 80) * 1deg))
   }
 
-  li::before {
-    font-size: var(--size);
+  li::before {;
     position: absolute;
     transform: translateX(40%);
   }
 }
-ol:last-of-type {
-  margin: 0;
+ol:first-of-type {
+  margin: 2px;
 }
 
 p.mood {
@@ -441,74 +364,12 @@ a.refresh {
   &:hover {
     color: #fff;
   }
-  
+
   &:hover:active {
     border-style: inset;
     background-color: #030;
   }
 }
-/* pre.angle {
-  counter-set: angle var(--angle);
-  &::after {
-    content: "≅" counter(angle);
-  }
-}
-
-pre.total {
-  counter-set: total var(--total);
-  &::after {
-    content: counter(total);
-  }
-}
-
-pre.arc {
-  counter-set: arc var(--arc);
-  &::after {
-    content: counter(arc);
-  }
-}
-
-pre.trim {
-  counter-set: trim calc(var(--trim) * 100);
-  &::after {
-    content: counter(trim) "/100";
-  }
-}
-
-pre.place {
-  counter-set: place calc(var(--place) * 100);
-  &::after {
-    content: counter(place) "/100";
-  }
-}
-
-pre.fraction {
-  counter-set: fraction calc(var(--fraction) * 100);
-  &::after {
-    content: counter(fraction) "/100";
-  }
-}
-
-pre.turn {
-  counter-set: turn var(--turn);
-  &::after {
-    content: counter(turn);
-  }
-}
-
-pre.twist {
-  counter-set: twist calc(var(--twist) * 100);
-  &::after {
-    content: counter(twist) "/100";
-  }
-}
-
-pre.first {
-  counter-set: first var(--first);
-  &::after {
-    content: counter(first);
-  }
-} */
 
 /* Show the GitHub logo */
 a.github {
@@ -530,30 +391,256 @@ a.github {
   }
 }
 
-
 @keyframes spin {
-    0% { --angle:  0; }
-   10% { --angle:  4; }
-   20% { --angle:  8; }
-   30% { --angle: 12; }
-   40% { --angle: 16; }
-   50% { --angle: 20; }
-   60% { --angle: 24; }
-   70% { --angle: 28; }
-   80% { --angle: 32; }
-   90% { --angle: 36; }
-  100% { --angle: 40; }
+   0%   { --angle:   0; }
+   0.5% { --angle:   2; }
+   1%   { --angle:   4; }
+   1.5% { --angle:   6; }
+   2%   { --angle:   8; }
+   2.5% { --angle:  10; }
+   3%   { --angle:  12; }
+   3.5% { --angle:  14; }
+   4%   { --angle:  16; }
+   4.5% { --angle:  18; }
+   5%   { --angle:  20; }
+   5.5% { --angle:  22; }
+   6%   { --angle:  24; }
+   6.5% { --angle:  26; }
+   7%   { --angle:  28; }
+   7.5% { --angle:  30; }
+   8%   { --angle:  32; }
+   8.5% { --angle:  34; }
+   9%   { --angle:  36; }
+   9.5% { --angle:  38; }
+  10%   { --angle:  40; }
+  10.5% { --angle:  42; }
+  11%   { --angle:  44; }
+  11.5% { --angle:  46; }
+  12%   { --angle:  48; }
+  12.5% { --angle:  50; }
+  13%   { --angle:  52; }
+  13.5% { --angle:  54; }
+  14%   { --angle:  56; }
+  14.5% { --angle:  58; }
+  15%   { --angle:  60; }
+  15.5% { --angle:  62; }
+  16%   { --angle:  64; }
+  16.5% { --angle:  66; }
+  17%   { --angle:  68; }
+  17.5% { --angle:  70; }
+  18%   { --angle:  72; }
+  18.5% { --angle:  74; }
+  19%   { --angle:  76; }
+  19.5% { --angle:  78; }
+  20%   { --angle:  80; }
+  20.5% { --angle:  82; }
+  21%   { --angle:  84; }
+  21.5% { --angle:  86; }
+  22%   { --angle:  88; }
+  22.5% { --angle:  90; }
+  23%   { --angle:  92; }
+  23.5% { --angle:  94; }
+  24%   { --angle:  96; }
+  24.5% { --angle:  98; }
+  25%   { --angle: 100; }
+  25.5% { --angle: 102; }
+  26%   { --angle: 104; }
+  26.5% { --angle: 106; }
+  27%   { --angle: 108; }
+  27.5% { --angle: 110; }
+  28%   { --angle: 112; }
+  28.5% { --angle: 114; }
+  29%   { --angle: 116; }
+  29.5% { --angle: 118; }
+  30%   { --angle: 120; }
+  30.5% { --angle: 122; }
+  31%   { --angle: 124; }
+  31.5% { --angle: 126; }
+  32%   { --angle: 128; }
+  32.5% { --angle: 130; }
+  33%   { --angle: 132; }
+  33.5% { --angle: 134; }
+  34%   { --angle: 136; }
+  34.5% { --angle: 138; }
+  35%   { --angle: 140; }
+  35.5% { --angle: 142; }
+  36%   { --angle: 144; }
+  36.5% { --angle: 146; }
+  37%   { --angle: 148; }
+  37.5% { --angle: 150; }
+  38%   { --angle: 152; }
+  38.5% { --angle: 154; }
+  39%   { --angle: 156; }
+  39.5% { --angle: 158; }
+  40%   { --angle: 160; }
+  40.5% { --angle: 162; }
+  41%   { --angle: 164; }
+  41.5% { --angle: 166; }
+  42%   { --angle: 168; }
+  42.5% { --angle: 170; }
+  43%   { --angle: 172; }
+  43.5% { --angle: 174; }
+  44%   { --angle: 176; }
+  44.5% { --angle: 178; }
+  45%   { --angle: 180; }
+  45.5% { --angle: 182; }
+  46%   { --angle: 184; }
+  46.5% { --angle: 186; }
+  47%   { --angle: 188; }
+  47.5% { --angle: 190; }
+  48%   { --angle: 192; }
+  48.5% { --angle: 194; }
+  49%   { --angle: 196; }
+  49.5% { --angle: 198; }
+  50%   { --angle: 200; }
+  50.5% { --angle: 202; }
+  51%   { --angle: 204; }
+  51.5% { --angle: 206; }
+  52%   { --angle: 208; }
+  52.5% { --angle: 210; }
+  53%   { --angle: 212; }
+  53.5% { --angle: 214; }
+  54%   { --angle: 216; }
+  54.5% { --angle: 218; }
+  55%   { --angle: 220; }
+  55.5% { --angle: 222; }
+  56%   { --angle: 224; }
+  56.5% { --angle: 226; }
+  57%   { --angle: 228; }
+  57.5% { --angle: 230; }
+  58%   { --angle: 232; }
+  58.5% { --angle: 234; }
+  59%   { --angle: 236; }
+  59.5% { --angle: 238; }
+  60%   { --angle: 240; }
+  60.5% { --angle: 242; }
+  61%   { --angle: 244; }
+  61.5% { --angle: 246; }
+  62%   { --angle: 248; }
+  62.5% { --angle: 250; }
+  63%   { --angle: 252; }
+  63.5% { --angle: 254; }
+  64%   { --angle: 256; }
+  64.5% { --angle: 258; }
+  65%   { --angle: 260; }
+  65.5% { --angle: 262; }
+  66%   { --angle: 264; }
+  66.5% { --angle: 266; }
+  67%   { --angle: 268; }
+  67.5% { --angle: 270; }
+  68%   { --angle: 272; }
+  68.5% { --angle: 274; }
+  69%   { --angle: 276; }
+  69.5% { --angle: 278; }
+  70%   { --angle: 280; }
+  70.5% { --angle: 282; }
+  71%   { --angle: 284; }
+  71.5% { --angle: 286; }
+  72%   { --angle: 288; }
+  72.5% { --angle: 290; }
+  73%   { --angle: 292; }
+  73.5% { --angle: 294; }
+  74%   { --angle: 296; }
+  74.5% { --angle: 298; }
+  75%   { --angle: 300; }
+  75.5% { --angle: 302; }
+  76%   { --angle: 304; }
+  76.5% { --angle: 306; }
+  77%   { --angle: 308; }
+  77.5% { --angle: 310; }
+  78%   { --angle: 312; }
+  78.5% { --angle: 314; }
+  79%   { --angle: 316; }
+  79.5% { --angle: 318; }
+  80%   { --angle: 320; }
+  80.5% { --angle: 322; }
+  81%   { --angle: 324; }
+  81.5% { --angle: 326; }
+  82%   { --angle: 328; }
+  82.5% { --angle: 330; }
+  83%   { --angle: 332; }
+  83.5% { --angle: 334; }
+  84%   { --angle: 336; }
+  84.5% { --angle: 338; }
+  85%   { --angle: 340; }
+  85.5% { --angle: 342; }
+  86%   { --angle: 344; }
+  86.5% { --angle: 346; }
+  87%   { --angle: 348; }
+  87.5% { --angle: 350; }
+  88%   { --angle: 352; }
+  88.5% { --angle: 354; }
+  89%   { --angle: 356; }
+  89.5% { --angle: 358; }
+  90%   { --angle: 360; }
+  90.5% { --angle: 362; }
+  91%   { --angle: 364; }
+  91.5% { --angle: 366; }
+  92%   { --angle: 368; }
+  92.5% { --angle: 370; }
+  93%   { --angle: 372; }
+  93.5% { --angle: 374; }
+  94%   { --angle: 376; }
+  94.5% { --angle: 378; }
+  95%   { --angle: 380; }
+  95.5% { --angle: 382; }
+  96%   { --angle: 384; }
+  96.5% { --angle: 386; }
+  97%   { --angle: 388; }
+  97.5% { --angle: 390; }
+  98%   { --angle: 392; }
+  98.5% { --angle: 394; }
+  99%   { --angle: 396; }
+  99.5% { --angle: 398; }
+  100%  { --angle: 400; }
 }
+
 @keyframes final {
-    0% { --angle: 0; }
-   10% { --angle: 6; }
-   20% { --angle: 12; }
-   30% { --angle: 18; }
-   40% { --angle: 24; }
-   50% { --angle: 30; }
-   60% { --angle: 36; }
-   70% { --angle: 42; }
-   80% { --angle: 48; }
-   90% { --angle: 54; }
-  100% { --angle: 60; }
+   0%    { --angle:  0; }
+   0.5%  { --angle:  2; }
+   1%    { --angle:  4; }
+   1.5%  { --angle:  6; }
+   2%    { --angle:  8; }
+   2.5%  { --angle: 10; }
+   3%    { --angle: 12; }
+   3.5%  { --angle: 14; }
+   4%    { --angle: 16; }
+   4.5%  { --angle: 18; }
+   5%    { --angle: 20; }
+   6%    { --angle: 21; }
+   7%    { --angle: 24; }
+   8%    { --angle: 29; }
+   9%    { --angle: 36; }
+   10%   { --angle: 33; }
+   21%   { --angle: 31; }
+   22%   { --angle: 33; }
+   23%   { --angle: 31; }
+   24%   { --angle: 33; }
+   25%   { --angle: 31; }
+   26%   { --angle: 33; }
+   27%   { --angle: 31; }
+   28%   { --angle: 33; }
+   29%   { --angle: 31; }
+   30%   { --angle: 33; }
+   31%   { --angle: 31; }
+   32%   { --angle: 33; }
+   33%   { --angle: 31; }
+   34%   { --angle: 33; }
+   35%   { --angle: 31; }
+   36%   { --angle: 33; }
+   37%   { --angle: 31; }
+   38%   { --angle: 33; }
+   39%   { --angle: 38; }
+   40%   { --angle: 42; }
+   50%   { --angle: 41; }
+   60%   { --angle: 40; }
+   80%   { --angle: 41; }
+   96%   { --angle: 41; }
+   97%   { --angle: 42; }
+   97.5% { --angle: 45; }
+   98%   { --angle: 47; }
+   98.5% { --angle: 50; }
+   99%   { --angle: 52; }
+   99.5% { --angle: 56; }
+  100%   { --angle: 60; }
 }
