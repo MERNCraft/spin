@@ -2,7 +2,7 @@
 @counter-style reel-one {
   system: cyclic;
   symbols:
-"🍇" "🍈" "🍉" "🍒" "🍊" "🍋" "🍍" "🥭" "🍎" "🍏" "🍐" "🍑" "🍌" "🍓" "🫐" "🥝" "🍅" "🥥";
+"🍇" "🍈" "🍉" "🍒" "🍓" "🍋" "🍑" "🍍" "🥭" "🍎" "🍏" "🍐" "🍌" "🍊" "🫐" "🥝" "🍅" "🥥";
   suffix: "";
 }
 
@@ -30,7 +30,8 @@
 :root {
   --white:  #fff;
   --light:  #ddd;
-  --brdr:   #060;
+  --btn:    #060;
+  --brdr:   #090;
   --dark:   #222;
   --black:  #000;
   --bg:     #030;
@@ -63,11 +64,16 @@
   --diameter: calc(var(--girth) / 3.1415962);
   --radius:   calc(var(--diameter) / 2);
 
-  /* Placement in window ( KLUDGE = 4px ) */
+  /* Placement in window ( KLUDGE = 8px ) */
   --frame:    110px;
-  --li-top:   calc(var(--radius) - var(--half) - 4px);
-  --ol-top: calc(var(--frame) / 2 - var(--radius));
-  --bar-in: 36px; /* used to centre orange win bar */
+  --li-top:   calc(var(--radius) - var(--half) - 8px);
+  --left:     10px;
+  --ol-top:   calc(var(--frame) / 2 - var(--radius));
+  --bar-in:   36px; /* used to centre orange win bar */
+  --margin:   2px;  /* space between reels */
+
+  --duration: 2s;
+  --final:    calc(2 * var(--duration));
 
   /* Shading of curved reels */
   --drum: linear-gradient(
@@ -84,7 +90,8 @@
   );
 
   /* Initial mood emoji: slightly happy */
-  counter-set: mood 5;
+  --m-top: 16px;
+  --mood: 5;
 }
 
 body {
@@ -152,40 +159,52 @@ div.buttons {
   display: flex;
   justify-content: space-between;
   width: var(--view);
+  pointer-events: none;
 }
 
-div.buttons button {
-  flex: 1
+div.buttons .button {
+  flex: 1;
 }
 
 .button {
+  background-color: var(--btn);
   border: 1px outset var(--brdr);
   border-radius: var(--pad);
   padding: var(--side) var(--pad);
   cursor: pointer;
+  user-select: none;
+  pointer-events: all;
 }
 
 .button:hover {
   color: var(--white);
 }
 
-.button:hover:active {
+.button:hover:active,
+.button:has(:checked) {
   border-style: inset;
-  background-color: var(--black);
+  border-color: var(--btn);
+  background-color: var(--bg);
+}
+.button:has(:checked) {
+  color: var(--btn);
 }
 
 
 /* Reels */
 
 ol {
-  position: absolute;
+  position: relative;
   top: var(--ol-top);
-/* } */
 
-/* 
-ol.one { */
-  /* The reel will rotate, starting at an angle of 0.
-   * An animation will change this value.
+  height: var(--diameter);
+  width: var(--f-size);
+  background: var(--drum);
+  list-style: none;
+  margin: var(--margin);
+
+  /* The reels will rotate, starting at an angle of 0.
+   * A different animation will change this value for each reel.
    */
   --angle: 0;
 
@@ -209,8 +228,28 @@ ol.one { */
   --first: mod(
     calc(var(--total) - var(--turn)), var(--total)
   );
+
+  counter-set: index var(--first);
+
+  animation-duration: var(--duration);
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1; /* infinite; */
 }
 
+/* Place a shadow gradient over the list items */
+ol::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: #0000;
+  background: var(--shadow);
+}
+
+/* Each reel has its own counter with fruit ordered differently */
 ol.one li::before {
   content: counter(index, reel-one);
 }
@@ -221,145 +260,107 @@ ol.three li::before {
   content: counter(index, reel-three);
 }
 
-.buttons:not(.final) label {
-  background-color: #090;
-}
-.buttons:has(#two:checked):has(#three:checked),
-.buttons:has(#one:checked):has(#three:checked),
-.buttons:has(#one:checked):has(#two:checked) {
-  pointer-events: none;
+/* Style list items to simulate rotation around a reel */
+li {
+  position: absolute;
+  top: var(--li-top);
+  left: 0;
+  font-size: var(--f-size);
+
+  /* Prepare to rotate items about their x-axis */
+  counter-increment: index;
+  transform-origin: var(--origin);
+  
+  &:nth-child(1) {
+    transform: rotateX(calc((var(--twist) - 100) * 1deg))
+  }
+
+  &:nth-child(2) {
+    transform: rotateX(calc((var(--twist) - 80) * 1deg))
+  }
+
+  &:nth-child(3) {
+    transform: rotateX(calc((var(--twist) - 60) * 1deg))
+  }
+
+  &:nth-child(4) {
+    transform:rotateX(calc((var(--twist) - 40) * 1deg))
+  }
+
+  &:nth-child(5) {
+    transform:rotateX(calc((var(--twist) - 20) * 1deg))
+  }
+
+  &:nth-child(6) {
+    transform: rotateX(calc(var(--twist) * 1deg))
+  }
+
+  &:nth-child(7) {
+    transform: rotateX(calc((var(--twist) + 20) * 1deg))
+  }
+
+  &:nth-child(8) {
+    transform: rotateX(calc((var(--twist) + 40) * 1deg))
+  }
+
+  &:nth-child(9) {
+    transform: rotateX(calc((var(--twist) + 60) * 1deg))
+  }
+
+  &:nth-child(10) {
+    transform: rotateX(calc((var(--twist) + 80) * 1deg))
+  }
+
+  &::before {
+    position: absolute;
+    left: var(--left);
+  }
 }
 
+/* Spin the appropriate reel for the first two clicks */
 .buttons:has(#one:checked)   ~ .reels .one,
 .buttons:has(#two:checked)   ~ .reels .two,
 .buttons:has(#three:checked) ~ .reels .three {
   animation-name: spin;
 }
 
+/* Allow third click through to the .final.button  */
+.buttons:has(#two:checked):has(#three:checked)  label:has(#one),
+.buttons:has(#one:checked):has(#three:checked) label:has(#two),
+.buttons:has(#one:checked):has(#two:checked) label:has(#three)
+{
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* Play the final animation for whichever reel is clicked third */
 .buttons:has(#final-one:checked)   ~ .reels .one,
 .buttons:has(#final-two:checked)   ~ .reels .two,
 .buttons:has(#final-three:checked) ~ .reels .three {
   animation-name: final;
-  animation-duration: 4s;
-
+  animation-duration: var(--final);
 }
 
-input:checked + span {
-  /* background-color: red; */
-}
 
-ol {
-  position: relative;
-  margin: 0;
-  height: var(--diameter);
-  width: var(--f-size);
-  background: var(--drum);
-  list-style: none;
-  margin-right: 2px;
-
-  counter-set: index var(--first);
-
-  /* animation-name: spin; */
-  animation-duration: 2s;
-  animation-fill-mode: forwards;
-  animation-iteration-count: 1; /* infinite; */
-
-  /* Place a shadow gradient over the list items */
-  &::after {
-    content: "_";
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    color: #0000;
-    background: var(--shadow);
-  }
-
-  li {
-    position: absolute;
-    left: 0;
-    top: var(--li-top);
-    counter-increment: index;
-    font-size: var(--f-size);
-
-    transform-origin: var(--origin);
-  }
-
-  li:nth-child(1) {
-    transform: rotateX(calc((var(--twist) - 100) * 1deg))
-  }
-
-  li:nth-child(2) {
-    transform: rotateX(calc((var(--twist) - 80) * 1deg))
-  }
-
-  li:nth-child(3) {
-    transform: rotateX(calc((var(--twist) - 60) * 1deg))
-  }
-
-  li:nth-child(4) {
-    transform:rotateX(calc((var(--twist) - 40) * 1deg))
-  }
-
-  li:nth-child(5) {
-    transform:rotateX(calc((var(--twist) - 20) * 1deg))
-  }
-
-  li:nth-child(6) {
-    transform: rotateX(calc(var(--twist) * 1deg))
-  }
-
-  li:nth-child(7) {
-    transform: rotateX(calc((var(--twist) + 20) * 1deg))
-  }
-
-  li:nth-child(8) {
-    transform: rotateX(calc((var(--twist) + 40) * 1deg))
-  }
-
-  li:nth-child(9) {
-    transform: rotateX(calc((var(--twist) + 60) * 1deg))
-  }
-
-  li:nth-child(10) {
-    transform: rotateX(calc((var(--twist) + 80) * 1deg))
-  }
-
-  li::before {;
-    position: absolute;
-    transform: translateX(40%);
-  }
-}
-ol:first-of-type {
-  margin: 2px;
-}
-
-p.mood {
+/* Replay button */
+a.replay {
   position: absolute;
-  margin: 0;
-  left: 0;
-  top: 8px;
-  font-size: 73px;
-}
-p.mood::after {
-  content: counter(mood, mood);
-
-}
-
-a.refresh {
-  position: absolute;
-  right: 0;
-  top: 48px;
-  width: 73px;
-  height: 24px;
+  left: var(--space);
+  bottom: -27px;
+  width: var(--view);
+  padding: var(--side) 0;
   text-align: center;
   color: #ddd;
   text-decoration: none;
   background-color: #060;
   border: 1px outset #090;
   border-radius: 8px;
+
+  opacity: 0;
+  pointer-events: none;
+  transition-property: bottom, opacity;
+  transition-duration: 0s, 0.2s;
+  transition-delay: 5s, 5s;
 
   &:hover {
     color: #fff;
@@ -370,6 +371,29 @@ a.refresh {
     background-color: #030;
   }
 }
+.final:has(:checked) ~ .replay {
+  opacity: 1;
+  pointer-events: all;
+  bottom: var(--b-size);
+}
+
+ 
+/* Animate the emoji */
+p.mood {
+  position: absolute;
+  margin: 0;
+  left: 0;
+  top: var(--m-top);
+  font-size: var(--space);
+}
+p.mood::after {
+  counter-set: mood var(--mood);
+  content: counter(mood, mood);
+}
+.final:has(:checked) ~ .mood {
+  animation: joy 2s 2.5s forwards;
+}
+
 
 /* Show the GitHub logo */
 a.github {
@@ -390,6 +414,8 @@ a.github {
     }
   }
 }
+
+/* Animations */
 
 @keyframes spin {
    0%   { --angle:   0; }
@@ -643,4 +669,17 @@ a.github {
    99%   { --angle: 52; }
    99.5% { --angle: 56; }
   100%   { --angle: 60; }
+}
+
+@keyframes joy {
+    0% { --mood: 5; }
+    5% { --mood: 6; }
+   10% { --mood: 7; }
+   15% { --mood: 8; }
+   20% { --mood: 9; }
+   80% { --mood: 9; }
+   85% { --mood: 4; }
+   90% { --mood: 3; }
+   95% { --mood: 2; }
+  100% { --mood: 1; }
 }
