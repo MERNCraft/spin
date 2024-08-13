@@ -28,23 +28,24 @@
 
 /* Colors and dimensions */
 :root {
-  --white:  #fff;
-  --light:  #ddd;
-  --btn:    #060;
-  --brdr:   #090;
-  --dark:   #222;
-  --black:  #000;
-  --bg:     #030;
-  --bar-bg: #f60;
+  --white:   #fff;
+  --light:   #ddd;
+  --btn:     #060;
+  --brdr:    #090;
+  --dark:    #222;
+  --black:   #000;
+  --bg:      #030;
+  --bar-bg:  #fc0;
 
-  --main: 300px;
-  --view: 150px;
-  --side:   3px;
-  --pad:    8px;
+  --main:    300px;
+  --view:    150px;
+  --side:      3px;
+  --pad:       8px;
 
   /* Account for 1px border when spacing elements */
-  --b-size: 1px;
-  --space: 73px; /* (--main - --view) / 2 - 2 * --b-size */
+  --b-size:   1px;
+  --space:   100px; /* (--main - --view) / 2 - 2 * --b-size */
+  --gutter:  21px;
 
   /* ROTATING THE REELS */
 
@@ -57,7 +58,7 @@
   --f-size:   27px;
   --half:     calc(0.5 * var(--f-size));
   --origin:   0 var(--half) var(--radius);
-  
+
   /* Circumference, diameter and radius of each reel */
   --spacing:  1.5;
   --girth:    calc(var(--total) * var(--f-size) * var(--spacing));
@@ -67,10 +68,10 @@
   /* Placement in window ( KLUDGE = 8px ) */
   --frame:    110px;
   --li-top:   calc(var(--radius) - var(--half) - 8px);
-  --left:     10px;
+  --left:     10px; /* to centre fruit */
   --ol-top:   calc(var(--frame) / 2 - var(--radius));
   --bar-in:   36px; /* used to centre orange win bar */
-  --margin:   2px;  /* space between reels */
+  --gap:       2px; /* gap between reels */
 
   --duration: 2s;
   --final:    calc(2 * var(--duration));
@@ -90,8 +91,8 @@
   );
 
   /* Initial mood emoji: slightly happy */
-  --m-top: 16px;
   --mood: 5;
+  --margin: 0 -8px;
 }
 
 body {
@@ -129,8 +130,8 @@ main,
 div.reels {
   display: flex;
   position: absolute;
-  top: var(--pad);
-  left: var(--space);
+  top: var(--side);
+  left: var(--gutter);
 
   width: var(--view);
   height: var(--frame);
@@ -154,8 +155,8 @@ input {
 
 div.buttons {
   position: absolute;
-  bottom: var(--b-size);
-  left: var(--space);
+  bottom: var(--side);
+  left: var(--gutter);
   display: flex;
   justify-content: space-between;
   width: var(--view);
@@ -201,7 +202,7 @@ ol {
   width: var(--f-size);
   background: var(--drum);
   list-style: none;
-  margin: var(--margin);
+  margin: var(--gap);
 
   /* The reels will rotate, starting at an angle of 0.
    * A different animation will change this value for each reel.
@@ -260,6 +261,7 @@ ol.three li::before {
   content: counter(index, reel-three);
 }
 
+
 /* Style list items to simulate rotation around a reel */
 li {
   position: absolute;
@@ -270,7 +272,7 @@ li {
   /* Prepare to rotate items about their x-axis */
   counter-increment: index;
   transform-origin: var(--origin);
-  
+
   &:nth-child(1) {
     transform: rotateX(calc((var(--twist) - 100) * 1deg))
   }
@@ -317,6 +319,7 @@ li {
   }
 }
 
+
 /* Spin the appropriate reel for the first two clicks */
 .buttons:has(#one:checked)   ~ .reels .one,
 .buttons:has(#two:checked)   ~ .reels .two,
@@ -345,7 +348,7 @@ li {
 /* Replay button */
 a.replay {
   position: absolute;
-  left: var(--space);
+  left: var(--gutter);
   bottom: -27px;
   width: var(--view);
   padding: var(--side) 0;
@@ -374,16 +377,16 @@ a.replay {
 .final:has(:checked) ~ .replay {
   opacity: 1;
   pointer-events: all;
-  bottom: var(--b-size);
+  bottom: var(--side);
 }
 
- 
+
 /* Animate the emoji */
 p.mood {
   position: absolute;
-  margin: 0;
-  left: 0;
-  top: var(--m-top);
+  margin: -8px;
+  top: 0;
+  right: var(--gutter);
   font-size: var(--space);
 }
 p.mood::after {
@@ -414,6 +417,7 @@ a.github {
     }
   }
 }
+
 
 /* Animations */
 
@@ -659,8 +663,8 @@ a.github {
    39%   { --angle: 38; }
    40%   { --angle: 42; }
    50%   { --angle: 41; }
-   60%   { --angle: 40; }
-   80%   { --angle: 41; }
+   60%   { --angle: 42; }
+   80%   { --angle: 42; }
    96%   { --angle: 41; }
    97%   { --angle: 42; }
    97.5% { --angle: 45; }
