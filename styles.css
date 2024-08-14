@@ -1,31 +1,3 @@
-/* Custom counters for the reels and the mood emoji */
-@counter-style reel-one {
-  system: cyclic;
-  symbols:
-"🍇" "🍈" "🍉" "🍒" "🍓" "🍋" "🍑" "🍍" "🥭" "🍎" "🍏" "🍐" "🍌" "🍊" "🫐" "🥝" "🍅" "🥥";
-  suffix: "";
-}
-
-@counter-style reel-two {
-  system: cyclic;
-  symbols:
-"🫐" "🍐" "🍈" "🍒" "🥥" "🍑" "🍍" "🍋" "🥝" "🍎" "🍓" "🍉" "🍊" "🍌" "🥭" "🍇" "🍏" "🍅";
-  suffix: "";
-}
-
-@counter-style reel-three {
-  system: cyclic;
-  symbols:
-"🫐" "🍏" "🍇" "🍒" "🍑" "🥥" "🥝" "🍌" "🍈" "🍓" "🍊" "🍎" "🍅" "🍋" "🍐" "🍉" "🍍" "🥭";
-  suffix: "";
-}
-
-@counter-style mood {
-  system: cyclic;
-  symbols: "😔" "😞" "🙁" "😕" "🙂" "😀" "😄" "😁" "😊";
-  suffix: ""
-}
-
 /* Colors and dimensions */
 :root {
   --white:   #fff;
@@ -419,8 +391,36 @@ a.github {
 }
 
 
-/* Animations */
+/* Custom counters for the reels and the mood emoji */
+@counter-style reel-one {
+  system: cyclic;
+  symbols:
+"🍇" "🍈" "🍉" "🍒" "🍓" "🍋" "🍑" "🍍" "🥭" "🍎" "🍏" "🍐" "🍌" "🍊" "🫐" "🥝" "🍅" "🥥";
+  suffix: "";
+}
 
+@counter-style reel-two {
+  system: cyclic;
+  symbols:
+"🫐" "🍐" "🍈" "🍒" "🥥" "🍑" "🍍" "🍋" "🥝" "🍎" "🍓" "🍉" "🍊" "🍌" "🥭" "🍇" "🍏" "🍅";
+  suffix: "";
+}
+
+@counter-style reel-three {
+  system: cyclic;
+  symbols:
+"🫐" "🍏" "🍇" "🍒" "🍑" "🥥" "🥝" "🍌" "🍈" "🍓" "🍊" "🍎" "🍅" "🍋" "🍐" "🍉" "🍍" "🥭";
+  suffix: "";
+}
+
+@counter-style mood {
+  system: cyclic;
+  symbols: "😔" "😞" "🙁" "😕" "🙂" "😀" "😄" "😁" "😊";
+  suffix: ""
+}
+
+
+/* Animations */
 @keyframes spin {
    0%   { --angle:   0; }
    0.5% { --angle:   2; }
