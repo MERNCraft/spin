@@ -6,5 +6,5 @@ This project simulates a slot machine, using the `@counter-style` at-rule to cre
 
 The symbols are created using Unicode emojis.
 
-The page detects when you have clicked any two of the Spin buttons and hides the third Spin button to reveal a `.final.button` beneath it. This previously hidden button triggers a different animation for the fruit machine's final reel, and which animates the Smiley character.
+The page detects when you have clicked any two of the Spin buttons and hides the third Spin button to reveal a `.final.button` beneath it. This previously hidden button triggers a different animation for the fruit machine's final reel, and a second one which animates the Smiley character.
 

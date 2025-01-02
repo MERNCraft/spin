@@ -9,14 +9,15 @@
   --bg:      #030;
   --bar-bg:  #fc0;
 
-  --main:    300px;
+  --form:    300px;
   --view:    150px;
   --side:      3px;
+  --fill:      6px;
   --pad:       8px;
 
   /* Account for 1px border when spacing elements */
   --b-size:   1px;
-  --space:   100px; /* (--main - --view) / 2 - 2 * --b-size */
+  --space:   100px; /* (--form - --view) / 2 - 2 * --b-size */
   --gutter:  21px;
 
   /* ROTATING THE REELS */
@@ -73,7 +74,7 @@ body {
   padding: 0;
   min-height: 100vh;
 
-  /* Place the main element centrally */
+  /* Place the form element centrally */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,14 +85,14 @@ body {
   background-color: var(--dark);
 }
 
-main {
+form {
   position: relative;
-  width: var(--main);
+  width: var(--form);
   height: var(--view);
   background-color: var(--bg);
 }
 
-main,
+form,
 .reels {
   border: var(--b-size) solid var(--white);
   border-radius: var(--pad);
@@ -318,12 +319,12 @@ li {
 
 
 /* Replay button */
-a.replay {
+button {
   position: absolute;
   left: var(--gutter);
-  bottom: -27px;
+  bottom: 0;
   width: var(--view);
-  padding: var(--side) 0;
+  padding: var(--fill) 0;
   text-align: center;
   color: #ddd;
   text-decoration: none;
@@ -333,9 +334,6 @@ a.replay {
 
   opacity: 0;
   pointer-events: none;
-  transition-property: bottom, opacity;
-  transition-duration: 0s, 0.2s;
-  transition-delay: 5s, 5s;
 
   &:hover {
     color: #fff;
@@ -346,10 +344,13 @@ a.replay {
     background-color: #030;
   }
 }
-.final:has(:checked) ~ .replay {
+.final:has(:checked) ~ button {
   opacity: 1;
   pointer-events: all;
   bottom: var(--side);
+  transition-property: bottom, opacity;
+  transition-duration: 0s, 0.2s;
+  transition-delay: 5s, 5s;
 }
 
 

@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main>
+  <form>
     <!-- Buttons to trigger the final spin -->
     <div class="final buttons">
       <label class="button">
@@ -83,14 +83,16 @@
 
     <p class="mood"></p>
 
-    <!-- Link to reload the page -->
-    <a href="/spin" class="replay">Replay</a>
+    <!-- Button to reload the page -->
+    <button type="reset">Replay</button>
 
-    <a class="github"
+    <a
+      class="github"
       href="https://github.com/MERNCraft/spin"
+      target="github"
     >
       <img src="github.svg" alt="github">
     </a>
-  </main>
+  </form>
 </body>
 </html>
